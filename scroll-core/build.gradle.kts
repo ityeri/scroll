@@ -24,7 +24,7 @@ publishing {
         create<MavenPublication>("release") {
             from(components["java"])
             groupId = project.group.toString()
-            artifactId = "scroll-core"
+            artifactId = "scroll"
             version = project.version.toString()
         }
     }
