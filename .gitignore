@@ -195,3 +195,4 @@ build
 
 ._*
 .idea
+!gradle-wrapper.jar
