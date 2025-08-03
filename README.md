@@ -34,6 +34,6 @@ subprojects {
 
 ```groovy
 dependencies {
-    implementation("com.github.ityeri:scroll:<version>")
+    api("com.github.ityeri:scroll:<version>")
 }
 ```
