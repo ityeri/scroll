@@ -16,7 +16,9 @@ abstract class ScrollApplicationAdapter : ApplicationAdapter() {
     lateinit var camera: OrthographicCamera
     lateinit var viewport: ExtendViewport
     lateinit var batch: SpriteBatch
-    protected lateinit var shapeRenderer: ShapeRenderer
+    lateinit var shapeRenderer: ShapeRenderer
+    var currentShapeType: ShapeRenderer.ShapeType? = null
+    var isDrawing = false
 
     var wheelSensitivity = 0.1f
     var zoomSoftness = 10f
@@ -74,12 +76,30 @@ abstract class ScrollApplicationAdapter : ApplicationAdapter() {
         shapeDraw()
     }
 
-    fun shape(
+    fun useShapeRenderer(
         shapeType: ShapeRenderer.ShapeType = ShapeRenderer.ShapeType.Filled,
-        block: ShapeRenderer.() -> Unit) {
+        block: ShapeRenderer.() -> Unit
+    ) {
+
+        var previousShapeType: ShapeRenderer.ShapeType? = null
+        if (isDrawing) {
+            previousShapeType = currentShapeType!!
+            shapeRenderer.end()
+        }
+
+        currentShapeType = shapeType
+        isDrawing = true
+
         shapeRenderer.begin(shapeType)
         shapeRenderer.apply(block)
         shapeRenderer.end()
+
+        if (previousShapeType != null) {
+            shapeRenderer.begin(previousShapeType)
+            currentShapeType = previousShapeType
+        } else {
+            isDrawing = false
+        }
     }
 
     open fun input(dt: Float) {
