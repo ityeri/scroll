@@ -16,7 +16,7 @@ abstract class ScrollApplicationAdapter : ApplicationAdapter() {
     lateinit var camera: OrthographicCamera
     lateinit var viewport: ExtendViewport
     lateinit var batch: SpriteBatch
-    lateinit var shapeRenderer: ShapeRenderer
+    protected lateinit var shapeRenderer: ShapeRenderer
 
     var wheelSensitivity = 0.1f
     var zoomSoftness = 10f
@@ -71,10 +71,14 @@ abstract class ScrollApplicationAdapter : ApplicationAdapter() {
 
         // shape 작업
         shapeRenderer.projectionMatrix = camera.combined
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-
         shapeDraw()
+    }
 
+    fun shape(
+        shapeType: ShapeRenderer.ShapeType = ShapeRenderer.ShapeType.Filled,
+        block: ShapeRenderer.() -> Unit) {
+        shapeRenderer.begin(shapeType)
+        shapeRenderer.apply(block)
         shapeRenderer.end()
     }
 
